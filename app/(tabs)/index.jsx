@@ -1,4 +1,4 @@
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView } from "react-native";
 import RadioWidget from "@/components/RadioWidget";
 import ScheduleWidget from "@/components/ScheduleWidget";
 
