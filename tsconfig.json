@@ -13,5 +13,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-  ]
+, "app/(tabs)/contact.jsx", "app/(tabs)/index.jsx", "components/RadioWidget.jsx", "components/ScheduleWidget.jsx", "app/(tabs)/about.jsx", "app/(tabs)/blog.jsx", "components/TestRadioWidget.jsx"  ]
 }
