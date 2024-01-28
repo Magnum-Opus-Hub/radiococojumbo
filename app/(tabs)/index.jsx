@@ -2,7 +2,6 @@ import { ScrollView } from "react-native";
 import RadioWidget from "@/components/RadioWidget";
 import ScheduleWidget from "@/components/ScheduleWidget";
 
-
 export default function TabOneScreen() {
   return (
     <ScrollView
