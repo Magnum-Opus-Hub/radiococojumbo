@@ -51,30 +51,35 @@ const ScheduleWidget = () => {
           <ActivityIndicator />
         ) : (
           data.data.map((data) => (
-            <View
-              key={data.playlist?.id}
-              className="flex flex-row justify-between py-4 items-center"
-            >
-              <View className="flex-col">
-                <Text className=" text-md font-normal text-gray-900 sm:text-right shrink-0">
-                  {data.end.slice(0, -15)}
-                </Text>
-                <Text className=" text-md font-normal text-gray-500 sm:text-right shrink-0">
-                  {/* {data.start.slice(11, -9)} - {data.end.slice(11, -9)} */}
-                  {currentDate}
-                </Text>
-              </View>
+            <>
+              {new Date(data.end.slice(0, -15)) >= new Date(currentDate) ? (
+                <View
+                  key={data.playlist?.id}
+                  className="flex flex-row justify-between py-4 items-center"
+                >
+                  <View className="flex-col">
+                    <Text className=" text-md font-semibold text-gray-900 sm:text-right shrink-0">
+                      {moment(data.end.slice(0, -15)).format("dddd")}
+                    </Text>
+                    <Text className=" text-md font-normal text-gray-500 sm:text-right shrink-0">
+                      {data.start.slice(11, -9)} - {data.end.slice(11, -9)}
+                    </Text>
+                  </View>
 
-              <View className="flex-col">
-                <Text className="text-md font-semibold text-right text-gray-900 w-36">
-                  {data.playlist.title}
-                </Text>
+                  <View className="flex-col">
+                    <Text className="text-md font-semibold text-right text-gray-900 w-36">
+                      {data.playlist.title}
+                    </Text>
 
-                <Text className="text-sm text-right text-gray-500">
-                  {data.playlist.artist.slice(-10)}
-                </Text>
-              </View>
-            </View>
+                    <Text className="text-sm text-right text-gray-500">
+                      {data.playlist.artist.slice(-10)}
+                    </Text>
+                  </View>
+                </View>
+              ) : (
+                <></>
+              )}
+            </>
           ))
         )}
       </ScrollView>
