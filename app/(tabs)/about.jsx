@@ -1,47 +1,42 @@
 import { Text, View, Image, ScrollView } from "react-native";
-import { Stack } from 'expo-router';
-
 
 const people = [
   {
     name: "Lindsay Walton",
     role: "Front-end Developer",
-    imageUrl:
-      require("../../assets/images/logoicon.png"),
+    imageUrl: require("../../assets/images/logoicon.png"),
   },
   {
     name: "Lindsay W",
     role: "Front-end Developer",
-    imageUrl:
-      require("../../assets/images/logo.png"),
+    imageUrl: require("../../assets/images/logo.png"),
   },
   {
     name: "Lindsay Wal",
     role: "Front-end Developer",
-    imageUrl:
-      require("../../assets/images/logo.png"),
+    imageUrl: require("../../assets/images/logo.png"),
   },
   {
     name: "Lindsay Walt",
     role: "Front-end Developer",
-    imageUrl:
-      require("../../assets/images/logo.png"),
+    imageUrl: require("../../assets/images/logo.png"),
   },
   {
     name: "Lindsay Walto",
     role: "Front-end Developer",
-    imageUrl:
-      require("../../assets/images/logo.png"),
+    imageUrl: require("../../assets/images/logo.png"),
   },
 ];
 
 export default function About() {
   return (
-    <ScrollView       contentContainerStyle={styles.wrapper}
-    className="bg-gray-100 pt-8 px-2 flex">
+    <ScrollView
+      contentContainerStyle={styles.wrapper}
+      className="bg-gray-100 px-2 flex"
+    >
       <View className="bg-gray-100 py-12">
-        <View className="mx-auto">
-          <View className="mx-auto">
+        <View>
+          <View>
             <Text className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
               Our team
             </Text>
@@ -60,7 +55,6 @@ export default function About() {
                 <Image
                   className="shadow-lg aspect-[3/2] w-full rounded-2xl object-cover"
                   source={person.imageUrl}
-                  
                 />
                 <Text className="mt-6 text-lg font-semibold leading-8 tracking-tight text-gray-900">
                   {person.name}
@@ -77,11 +71,9 @@ export default function About() {
   );
 }
 
-
 const styles = {
   wrapper: {
     justifyContent: "center",
     alignItems: "center",
   },
 };
-

@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, ActivityIndicator, Image, Button } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  View,
+  ActivityIndicator,
+  Image,
+  Button,
+} from "react-native";
 
 import { Audio } from "expo-av";
 
 export default function RadioWidget() {
+
+  const Pulse = require('react-native-pulse').default;
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [sound, setSound] = useState();
@@ -102,7 +111,7 @@ export default function RadioWidget() {
 
       <View className="flex-row items-center justify-between">
         <View>
-          <Button title="plas" onPress={playSound}>
+          <Button title="Play" onPress={playSound}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -137,3 +146,4 @@ export default function RadioWidget() {
     </View>
   );
 }
+
