@@ -76,7 +76,7 @@ export default function Blog() {
                 className="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl shadow-lg bg-gray-900 px-8 pb-8 pt-80 sm:pt-48 lg:pt-80"
               >
                 <Image
-                  source={{ uri: post.imageUrl }}
+                  source={{ uri: post?.imageUrl }}
                   alt=""
                   className="absolute inset-0 -z-10 h-full w-full object-cover"
                 />
@@ -85,18 +85,9 @@ export default function Blog() {
 
                 <View className="flex flex-wrap items-center gap-y-1 overflow-hidden text-sm leading-6 text-gray-300">
                   <Text className="mr-8">{post.date}</Text>
-                  <View className="-ml-4 flex items-center gap-x-4">
-                    <Text className="flex gap-x-2.5">
-                      <Image
-                        source={post.author.imageUrl}
-                        className="h-6 w-6 flex-none rounded-full bg-white/10"
-                      />
-                      {post.author.name}
-                    </Text>
-                  </View>
                 </View>
                 <Text className="mt-3 text-lg font-semibold leading-6 text-white">
-                  <Text href={post.href}>
+                  <Text>
                     <Text className="absolute inset-0" />
                     {post.title}
                   </Text>

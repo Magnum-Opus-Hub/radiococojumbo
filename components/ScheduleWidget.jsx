@@ -54,7 +54,7 @@ const ScheduleWidget = () => {
             <>
               {new Date(data.end.slice(0, -15)) >= new Date(currentDate) ? (
                 <View
-                  key={data.playlist?.id}
+                  key={data.playlist.id}
                   className="flex flex-row justify-between py-4 items-center"
                 >
                   <View className="flex-col">
