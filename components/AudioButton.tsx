@@ -1,20 +1,20 @@
 import React, { Component } from "react";
 
 class AudioButton extends Component {
-  constructor(props) {
+  constructor(props: {} | Readonly<{}>) {
     super(props);
     this.state = {
       playing: false
     };
   }
 
-  onPlay = (event) => {
+  onPlay = () => {
     this.setState({ playing: true });
   };
-  onPause = (event) => {
+  onPause = () => {
     this.setState({ playing: false });
   };
-  onEnded = (event) => {
+  onEnded = () => {
     this.setState({ playing: false });
   };
 

@@ -2,10 +2,27 @@ import { View, Text, ActivityIndicator, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 
+
+interface ScheduleWidgetProps {
+  data: Data[];
+}
+interface Data {
+  start: string;
+  end: string;
+  playlist: Playlist;
+}
+interface Playlist {
+  name: string;
+  colour: string;
+  artist: string;
+  title: string;
+  artwork: string;
+}
+
 const ScheduleWidget = () => {
   const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
-  const url = "https://public.radio.co/stations/s1cdb8ef73/embed/schedule";
+  const [schedule, setSchedule] = useState<ScheduleWidgetProps>();
+  const url = "https://public.radio.co/stations/sb6e6793c6/embed/schedule";
 
   const [currentTime, setCurrentTime] = useState("");
   const [currentDate, setCurrentDate] = useState("");
@@ -13,21 +30,22 @@ const ScheduleWidget = () => {
   const getData = () => {
     fetch(url)
       .then((response) => response.json())
-      .then((json) => setData(json))
+      .then((json) => setSchedule(json))
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
+    console.log('schedule', schedule);
   };
 
   useEffect(() => {
     const interval = setInterval(() => {
-      var time = moment().format(" hh:mm A");
+      const time = moment().format(" hh:mm A");
       setCurrentTime(time);
     }, 1000);
     return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
-    var date = moment().format("yyyy-MM-DD");
+    const date = moment().format("yyyy-MM-DD");
     setCurrentDate(date);
   }, []);
 
@@ -48,36 +66,36 @@ const ScheduleWidget = () => {
 
       <ScrollView className="h-full">
         {isLoading ? (
-          <ActivityIndicator />
+            <ActivityIndicator />
         ) : (
-          data.data.map((data) => (
+            schedule?.data.map((item) => (
             <>
-              {new Date(data.end.slice(0, -15)) >= new Date(currentDate) ? (
+              {new Date(item.end.slice(0, -15)) >= new Date(currentDate) ? (
                 <View
-                  key={data.playlist.id}
+                  key={item.playlist.name}
                   className="flex flex-row justify-between py-4 items-center"
                 >
                   <View className="flex-col">
                     <Text className=" text-md font-semibold text-gray-900 sm:text-right shrink-0">
-                      {moment(data.end.slice(0, -15)).format("dddd")}
+                      {moment(item.end.slice(0, -15)).format("dddd")}
                     </Text>
                     <Text className=" text-md font-normal text-gray-500 sm:text-right shrink-0">
-                      {data.start.slice(11, -9)} - {data.end.slice(11, -9)}
+                      {item.start.slice(11, -9)} - {item.end.slice(11, -9)}
                     </Text>
                   </View>
 
                   <View className="flex-col">
                     <Text className="text-md font-semibold text-right text-gray-900 w-36">
-                      {data.playlist.title}
+                      {item.playlist.title}
                     </Text>
 
                     <Text className="text-sm text-right text-gray-500">
-                      {data.playlist.artist.slice(-10)}
+                      {item.playlist.artist.slice(-10)}
                     </Text>
                   </View>
                 </View>
               ) : (
-                <></>
+                <>pula?</>
               )}
             </>
           ))
