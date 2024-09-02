@@ -2,7 +2,6 @@ import { View, Text, ActivityIndicator, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 
-
 interface ScheduleWidgetProps {
   data: Data[];
 }
@@ -33,7 +32,6 @@ const ScheduleWidget = () => {
       .then((json) => setSchedule(json))
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
-    console.log('schedule', schedule);
   };
 
   useEffect(() => {
@@ -54,7 +52,7 @@ const ScheduleWidget = () => {
   }, []);
 
   return (
-    <View className="shadow-md bg-white rounded-xl p-6 w-11/12 h-96">
+    <View className="shadow-md bg-white rounded-xl p-6 w-11/12 max-h-96">
       <View className="flex-row items-center justify-between pb-2">
         <Text className="text-lg font-bold text-start tracking-tight text-gray-900 sm:text-xl">
           Schedule
@@ -66,10 +64,10 @@ const ScheduleWidget = () => {
 
       <ScrollView className="h-full">
         {isLoading ? (
-            <ActivityIndicator />
+          <ActivityIndicator />
         ) : (
-            schedule?.data.map((item) => (
-            <>
+          schedule?.data.map((item, index) => (
+            <View key={index}>
               {new Date(item.end.slice(0, -15)) >= new Date(currentDate) ? (
                 <View
                   key={item.playlist.name}
@@ -90,14 +88,14 @@ const ScheduleWidget = () => {
                     </Text>
 
                     <Text className="text-sm text-right text-gray-500">
-                      {item.playlist.artist.slice(-10)}
+                      {item.playlist.artist}
                     </Text>
                   </View>
                 </View>
               ) : (
-                <>pula?</>
+                <></>
               )}
-            </>
+            </View>
           ))
         )}
       </ScrollView>

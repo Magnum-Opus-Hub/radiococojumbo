@@ -1,11 +1,13 @@
 import { StatusBar } from "expo-status-bar";
-import { Platform, StyleSheet } from "react-native";
+import { Platform, StyleSheet, Image } from "react-native";
 import { Text, View } from "@/components/Themed";
 
 export default function ModalScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Modal</Text>
+    <View className="shadow-md bg-white flex-1 items-center justify-center">
+      <Text className="text-xl font-bold tracking-tight text-gray-900">
+        Radio România Online
+      </Text>
       <View
         style={styles.separator}
         lightColor="#eee"
