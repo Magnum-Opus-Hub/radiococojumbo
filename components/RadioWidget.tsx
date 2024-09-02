@@ -16,9 +16,7 @@ export default function RadioWidget() {
   const [radio, setRadio] = useState<Root | null>(null);
   const [sound, setSound] = useState<Audio.Sound | null>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [playerStatus, setPlayerStatus] = useState<AVPlaybackStatus | null>(
-    null
-  );
+
   const radioStatusUrl = "https://public.radio.co/stations/sb6e6793c6/status";
   const streamUrl = "https://s4.radio.co/sb6e6793c6/listen";
 
@@ -53,12 +51,10 @@ export default function RadioWidget() {
       try {
         if (isPlaying) {
           await sound.pauseAsync();
-          setPlayerStatus(await sound.getStatusAsync());
-          console.log({ playerStatus });
+
         } else {
           await sound.playAsync();
-          setPlayerStatus(await sound.getStatusAsync());
-          console.log({ playerStatus });
+
         }
         setIsPlaying(!isPlaying);
       } catch (error) {

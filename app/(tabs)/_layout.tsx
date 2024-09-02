@@ -31,20 +31,20 @@ export default function TabLayout() {
         options={{
           title: "Radio",
           tabBarIcon: ({ color }) => <TabBarIcon name="radio" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color="red"
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
-          ),
+          // headerRight: () => (
+          //   <Link href="/modal" asChild>
+          //     <Pressable>
+          //       {({ pressed }) => (
+          //         <FontAwesome
+          //           name="info-circle"
+          //           size={25}
+          //           color="red"
+          //           style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+          //         />
+          //       )}
+          //     </Pressable>
+          //   </Link>
+          // ),
           headerLeft: () => (
             <Image
               style={{ width: 25, height: 25, marginLeft: 15 }}
