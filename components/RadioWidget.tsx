@@ -9,7 +9,6 @@ import {
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import {
   Audio,
-  AVPlaybackStatus,
   InterruptionModeAndroid,
   InterruptionModeIOS,
 } from "expo-av";
@@ -72,7 +71,7 @@ export default function RadioWidget() {
 
     const interval = setInterval(() => {
       getData(); // Poll for updates
-    }, 10000); // Update every 10 seconds
+    }, 5000); // Update every 5 seconds
 
     Audio.setAudioModeAsync({
       staysActiveInBackground: true,
@@ -148,7 +147,7 @@ export default function RadioWidget() {
           <FontAwesome6
             name={isPlaying ? "pause" : "play"}
             size={30}
-            color="#ef4444"
+            color="#000"
           />
         </TouchableHighlight>
       </View>
