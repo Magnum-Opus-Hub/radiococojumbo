@@ -7,7 +7,12 @@ import {
   TouchableHighlight,
 } from "react-native";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
-import { Audio, AVPlaybackStatus } from "expo-av";
+import {
+  Audio,
+  AVPlaybackStatus,
+  InterruptionModeAndroid,
+  InterruptionModeIOS,
+} from "expo-av";
 import { Root } from "@/app/types";
 import PulsatingDot from "./PulsatingDot";
 
@@ -51,10 +56,8 @@ export default function RadioWidget() {
       try {
         if (isPlaying) {
           await sound.pauseAsync();
-
         } else {
           await sound.playAsync();
-
         }
         setIsPlaying(!isPlaying);
       } catch (error) {
@@ -74,6 +77,8 @@ export default function RadioWidget() {
     Audio.setAudioModeAsync({
       staysActiveInBackground: true,
       playsInSilentModeIOS: true,
+      interruptionModeIOS: InterruptionModeIOS.DuckOthers,
+      interruptionModeAndroid: InterruptionModeAndroid.DuckOthers,
       shouldDuckAndroid: true,
       playThroughEarpieceAndroid: true,
     });
@@ -82,7 +87,7 @@ export default function RadioWidget() {
       sound?.unloadAsync(); // Unload the sound when the component unmounts
       clearInterval(interval); // Clear the interval on unmount
     };
-  }, []);
+  }, [sound]);
 
   const renderStatus = useCallback(() => {
     if (isLoading) {
@@ -143,7 +148,7 @@ export default function RadioWidget() {
           <FontAwesome6
             name={isPlaying ? "pause" : "play"}
             size={30}
-            color="#000"
+            color="#ef4444"
           />
         </TouchableHighlight>
       </View>

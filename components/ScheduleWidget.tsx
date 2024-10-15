@@ -24,7 +24,6 @@ const ScheduleWidget = () => {
   const url = "https://public.radio.co/stations/sb6e6793c6/embed/schedule";
 
   const [currentTime, setCurrentTime] = useState("");
-  const [currentDate, setCurrentDate] = useState("");
 
   const getData = () => {
     fetch(url)
@@ -40,11 +39,6 @@ const ScheduleWidget = () => {
       setCurrentTime(time);
     }, 1000);
     return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    const date = moment().format("yyyy-MM-DD");
-    setCurrentDate(date);
   }, []);
 
   useEffect(() => {
