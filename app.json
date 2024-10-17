@@ -2,8 +2,8 @@
   "expo": {
     "name": "Romania Online",
     "slug": "radiococojumbo",
-    "versionCode": 2,
-    "version": "1.0.2",
+    "versionCode": 3,
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
