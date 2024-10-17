@@ -57,31 +57,35 @@ const ScheduleWidget = () => {
       </View>
 
       <ScrollView className="h-full">
-        {schedule?.data.map((item, index) => (
-          <View
-            key={index}
-            className="flex flex-row justify-between py-4 items-center"
-          >
-            <View className="flex-col">
-              <Text className=" text-md font-semibold text-gray-900 sm:text-right shrink-0">
-                {moment(item.end.slice(0, -15)).format("dddd")}
-              </Text>
-              <Text className=" text-md font-normal text-gray-500 sm:text-right shrink-0">
-                {item.start.slice(11, -9)} - {item.end.slice(11, -9)}
-              </Text>
-            </View>
+        {schedule?.data.length === 0 ? (
+          <Text>No shows available</Text>
+        ) : (
+          schedule?.data.map((item, index) => (
+            <View
+              key={index}
+              className="flex flex-row justify-between py-4 items-center"
+            >
+              <View className="flex-col">
+                <Text className=" text-md font-semibold text-gray-900 sm:text-right shrink-0">
+                  {moment(item.end.slice(0, -15)).format("dddd")}
+                </Text>
+                <Text className=" text-md font-normal text-gray-500 sm:text-right shrink-0">
+                  {item.start.slice(11, -9)} - {item.end.slice(11, -9)}
+                </Text>
+              </View>
 
-            <View className="flex-col">
-              <Text className="text-md font-semibold text-right text-gray-900 w-36">
-                {item.playlist.title}
-              </Text>
+              <View className="flex-col">
+                <Text className="text-md font-semibold text-right text-gray-900 w-36">
+                  {item.playlist.title}
+                </Text>
 
-              <Text className="text-sm text-right text-gray-500">
-                {item.playlist.artist}
-              </Text>
+                <Text className="text-sm text-right text-gray-500">
+                  {item.playlist.artist}
+                </Text>
+              </View>
             </View>
-          </View>
-        ))}
+          ))
+        )}
       </ScrollView>
     </View>
   );

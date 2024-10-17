@@ -7,16 +7,14 @@ import {
   TouchableHighlight,
 } from "react-native";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
-import {
-  Audio,
-  InterruptionModeAndroid,
-  InterruptionModeIOS,
-} from "expo-av";
+import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";
 import { Root } from "@/app/types";
 import PulsatingDot from "./PulsatingDot";
 
 export default function RadioWidget() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingTrack, setIsLoadingTrack] = useState(true);
+  const [isSoundLoading, setIsSoundLoading] = useState<boolean>(true); // Track sound loading
+  const [isBuffering, setIsBuffering] = useState<boolean>(false); // For buffering state
   const [radio, setRadio] = useState<Root | null>(null);
   const [sound, setSound] = useState<Audio.Sound | null>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -32,26 +30,30 @@ export default function RadioWidget() {
     } catch (error) {
       console.error("Error fetching radio status:", error);
     } finally {
-      setIsLoading(false);
+      setIsLoadingTrack(false);
     }
   }, [radioStatusUrl]);
 
   const loadSound = async () => {
     try {
+      setIsSoundLoading(true); // Start sound loading
       const { sound } = await Audio.Sound.createAsync(
         {
           uri: streamUrl,
         },
-        { shouldPlay: false }
+        { shouldPlay: false } // Sound will not auto-play
       );
       setSound(sound);
     } catch (error) {
       console.error("Error loading sound:", error);
+    } finally {
+      setIsSoundLoading(false); // Sound loaded
     }
   };
 
   const handlePlayPause = async () => {
     if (sound) {
+      setIsBuffering(true); // Set buffering state
       try {
         if (isPlaying) {
           await sound.pauseAsync();
@@ -61,6 +63,8 @@ export default function RadioWidget() {
         setIsPlaying(!isPlaying);
       } catch (error) {
         console.error("Error playing/pausing sound:", error);
+      } finally {
+        setIsBuffering(false); // Reset buffering state
       }
     }
   };
@@ -89,23 +93,24 @@ export default function RadioWidget() {
   }, [sound]);
 
   const renderStatus = useCallback(() => {
-    if (isLoading) {
-      return <ActivityIndicator />;
-    }
     return (
       <Text
         className={`text-md tracking-tight font-bold ${
-          radio?.status === "offline" ? "text-red-500" : "text-green-600"
+          radio?.status === "offline" || "" ? "text-red-500" : "text-green-600"
         }`}
       >
         {radio?.status}
       </Text>
     );
-  }, [isLoading, radio]);
+  }, [radio]);
 
   const renderTrackInfo = useCallback(() => {
-    if (isLoading) {
-      return <ActivityIndicator />;
+    if (!radio?.status || isLoadingTrack) {
+      return (
+        <View className="flex flex-row gap-2">
+          <Text>Loading track info...</Text>
+        </View>
+      );
     }
     return (
       <View className="w-60">
@@ -114,7 +119,39 @@ export default function RadioWidget() {
         </Text>
       </View>
     );
-  }, [isLoading, radio]);
+  }, [isLoadingTrack, radio]);
+
+  const renderTrackImage = useCallback(() => {
+    if (!radio?.status) {
+      return <View className="w-16 h-16 rounded-lg bg-gray-300"></View>;
+    }
+    return (
+      <Image
+        className="w-16 h-16 rounded-lg"
+        source={{ uri: radio?.current_track?.artwork_url }}
+      />
+    );
+  }, [radio]);
+
+  const renderPlayPauseButton = () => {
+    // if (isSoundLoading) {
+    //   return <ActivityIndicator size="large" color="#000" />; // Show loader while sound is loading
+    // }
+
+    if (isBuffering) {
+      return <ActivityIndicator size="large" color="#000" />; // Show loader while buffering
+    }
+
+    return (
+      <View className="p-2">
+        <FontAwesome6
+          name={isPlaying ? "pause" : "play"}
+          size={30}
+          color="#000"
+        />
+      </View>
+    );
+  };
 
   return (
     <View className="shadow-md bg-white rounded-xl p-6 w-11/12 h-auto mb-6">
@@ -129,26 +166,18 @@ export default function RadioWidget() {
       </View>
 
       <View className="flex flex-row items-center">
-        <View className="mr-2">
-          {isLoading ? (
-            <ActivityIndicator />
-          ) : (
-            <Image
-              className="w-16 h-16 rounded-lg"
-              source={{ uri: radio?.current_track?.artwork_url }}
-            />
-          )}
-        </View>
+        <View className="mr-2">{renderTrackImage()}</View>
         <View>{renderTrackInfo()}</View>
       </View>
 
       <View className="flex-row items-center justify-center mt-4">
-        <TouchableHighlight onPress={handlePlayPause}>
-          <FontAwesome6
-            name={isPlaying ? "pause" : "play"}
-            size={30}
-            color="#000"
-          />
+        <TouchableHighlight
+          onPress={handlePlayPause}
+          underlayColor="#fff"
+          disabled={isSoundLoading} // Disable button while sound is loading
+          style={{ opacity: isSoundLoading ? 0.5 : 1 }} // Reduce opacity when disabled
+        >
+          {renderPlayPauseButton()}
         </TouchableHighlight>
       </View>
     </View>
