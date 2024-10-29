@@ -4,20 +4,20 @@ import {
   View,
   ActivityIndicator,
   Image,
-  TouchableHighlight,
+  Alert,
+  Button,
+  TouchableOpacity,
 } from "react-native";
-import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
-import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";
-import { Root } from "@/app/types";
+import { Audio } from "expo-av";
 import PulsatingDot from "./PulsatingDot";
+import { Root } from "@/app/types";
 
 export default function RadioWidget() {
   const [isLoadingTrack, setIsLoadingTrack] = useState(true);
   const [isSoundLoading, setIsSoundLoading] = useState<boolean>(true); // Track sound loading
-  const [isBuffering, setIsBuffering] = useState<boolean>(false); // For buffering state
   const [radio, setRadio] = useState<Root | null>(null);
   const [sound, setSound] = useState<Audio.Sound | null>(null);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [playing, setPlaying] = useState(false);
 
   const radioStatusUrl = "https://public.radio.co/stations/sb6e6793c6/status";
   const streamUrl = "https://s4.radio.co/sb6e6793c6/listen";
@@ -34,63 +34,74 @@ export default function RadioWidget() {
     }
   }, [radioStatusUrl]);
 
-  const loadSound = async () => {
-    try {
-      setIsSoundLoading(true); // Start sound loading
-      const { sound } = await Audio.Sound.createAsync(
-        {
-          uri: streamUrl,
-        },
-        { shouldPlay: false } // Sound will not auto-play
-      );
-      setSound(sound);
-    } catch (error) {
-      console.error("Error loading sound:", error);
-    } finally {
-      setIsSoundLoading(false); // Sound loaded
-    }
-  };
+  async function playSound() {
+    if (playing) return; // Prevent play if already playing
 
-  const handlePlayPause = async () => {
+    setIsSoundLoading(true); // Show loader while loading
+
+    try {
+      if (sound) {
+        // Unload the existing sound instance to reset the stream position
+        await sound.unloadAsync();
+      }
+
+      // Set audio mode for streaming
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: false,
+        staysActiveInBackground: true,
+        shouldDuckAndroid: true,
+        playThroughEarpieceAndroid: false,
+        playsInSilentModeIOS: true,
+      });
+
+      // Load and play the new sound instance for a fresh connection to live stream
+      const { sound: newSound } = await Audio.Sound.createAsync(
+        { uri: streamUrl },
+        { shouldPlay: true, isLooping: true }
+      );
+
+      setSound(newSound);
+      setPlaying(true);
+      setIsSoundLoading(false);
+      console.log("Playing Radio Stream in sync with live sound");
+    } catch (error) {
+      console.error("Error loading or playing radio stream:", error);
+      Alert.alert("Playback Error", "Unable to load the stream.");
+      setIsSoundLoading(false);
+    }
+  }
+
+  // Modified stopSound function
+  async function stopSound() {
     if (sound) {
-      setIsBuffering(true); // Set buffering state
       try {
-        if (isPlaying) {
-          await sound.pauseAsync();
-        } else {
-          await sound.playAsync();
-        }
-        setIsPlaying(!isPlaying);
+        await sound.pauseAsync();
+        await sound.unloadAsync(); // Unload to reset the stream on resume
+        setPlaying(false);
+        console.log("Stopping Radio Stream and unloading sound");
       } catch (error) {
-        console.error("Error playing/pausing sound:", error);
-      } finally {
-        setIsBuffering(false); // Reset buffering state
+        console.error("Error stopping sound:", error);
       }
     }
-  };
+  }
 
   useEffect(() => {
     getData();
-    loadSound();
+    playSound();
 
     const interval = setInterval(() => {
-      getData(); // Poll for updates
-    }, 5000); // Update every 5 seconds
+      getData();
+    }, 5000);
 
-    Audio.setAudioModeAsync({
-      staysActiveInBackground: true,
-      playsInSilentModeIOS: true,
-      interruptionModeIOS: InterruptionModeIOS.DuckOthers,
-      interruptionModeAndroid: InterruptionModeAndroid.DuckOthers,
-      shouldDuckAndroid: true,
-      playThroughEarpieceAndroid: true,
-    });
-
-    return () => {
-      sound?.unloadAsync(); // Unload the sound when the component unmounts
-      clearInterval(interval); // Clear the interval on unmount
-    };
-  }, [sound]);
+    return sound
+      ? () => {
+          console.log("Unloading Radio Stream");
+          sound
+            .unloadAsync()
+            .catch((error) => console.error("Unload Error:", error));
+        }
+      : undefined;
+  }, []);
 
   const renderStatus = useCallback(() => {
     return (
@@ -133,26 +144,6 @@ export default function RadioWidget() {
     );
   }, [radio]);
 
-  const renderPlayPauseButton = () => {
-    // if (isSoundLoading) {
-    //   return <ActivityIndicator size="large" color="#000" />; // Show loader while sound is loading
-    // }
-
-    if (isBuffering) {
-      return <ActivityIndicator size="large" color="#000" />; // Show loader while buffering
-    }
-
-    return (
-      <View className="p-2">
-        <FontAwesome6
-          name={isPlaying ? "pause" : "play"}
-          size={30}
-          color="#000"
-        />
-      </View>
-    );
-  };
-
   return (
     <View className="shadow-md bg-white rounded-xl p-6 w-11/12 h-auto mb-6">
       <View className="flex flex-row items-center justify-between mb-3">
@@ -171,14 +162,18 @@ export default function RadioWidget() {
       </View>
 
       <View className="flex-row items-center justify-center mt-4">
-        <TouchableHighlight
-          onPress={handlePlayPause}
-          underlayColor="#fff"
-          disabled={isSoundLoading} // Disable button while sound is loading
-          style={{ opacity: isSoundLoading ? 0.5 : 1 }} // Reduce opacity when disabled
-        >
-          {renderPlayPauseButton()}
-        </TouchableHighlight>
+        {isSoundLoading ? (
+          <ActivityIndicator size="small" color="#000000" />
+        ) : (
+          <TouchableOpacity
+            className="px-4 py-2 bg-red-500 rounded-full"
+            onPress={playing ? stopSound : playSound}
+          >
+            <Text className="text-white font-semibold">
+              {playing ? "Stop Radio" : "Play Radio"}
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );

@@ -10,7 +10,7 @@ export default function TabOneScreen() {
   const onRefresh = async () => {
     setRefreshing(true);
     // Add logic to refresh your components here, e.g., refetch data for RadioWidget or ScheduleWidget
-    await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate a 2-second delay for refresh
+    await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate a 2-second delay for refresh
     setRefreshing(false);
   };
 
@@ -23,6 +23,7 @@ export default function TabOneScreen() {
       } // Adding pull-to-refresh control
     >
       <RadioWidget />
+      {/* <TestRadio /> */}
       <ScheduleWidget />
     </ScrollView>
   );

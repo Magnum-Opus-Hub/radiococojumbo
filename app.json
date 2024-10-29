@@ -31,6 +31,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "playbackMode": "duckAndContinue",
       "permissions": ["WAKE_LOCK"],
       "package": "com.bala.url.radioromaniaonline"
     },
