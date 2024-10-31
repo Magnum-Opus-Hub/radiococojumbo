@@ -45,6 +45,10 @@ const ScheduleWidget = () => {
     getData();
   }, []);
 
+  const upcomingShows = schedule?.data.filter((item) =>
+    moment(item.end).isAfter(moment())
+  );
+
   return (
     <View className="shadow-md bg-white rounded-xl p-6 w-11/12 max-h-96">
       <View className="flex-row items-center justify-between pb-2">
@@ -57,17 +61,17 @@ const ScheduleWidget = () => {
       </View>
 
       <ScrollView className="h-full">
-        {schedule?.data.length === 0 ? (
-          <Text>No shows available</Text>
+        {upcomingShows?.length === 0 ? (
+          <Text>No upcoming shows available</Text>
         ) : (
-          schedule?.data.map((item, index) => (
+          upcomingShows?.map((item, index) => (
             <View
               key={index}
               className="flex flex-row justify-between py-4 items-center"
             >
               <View className="flex-col">
                 <Text className=" text-md font-semibold text-gray-900 sm:text-right shrink-0">
-                  {moment(item.end.slice(0, -15)).format("dddd")}
+                  {moment(item.end).format("dddd")}
                 </Text>
                 <Text className=" text-md font-normal text-gray-500 sm:text-right shrink-0">
                   {item.start.slice(11, -9)} - {item.end.slice(11, -9)}

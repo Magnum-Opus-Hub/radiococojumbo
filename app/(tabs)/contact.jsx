@@ -1,6 +1,20 @@
-import { ScrollView, Text, View } from "react-native";
+import {
+  ScrollView,
+  Text,
+  View,
+  Linking,
+  TouchableOpacity,
+} from "react-native";
 
 export default function Contact() {
+  const handlePhonePress = () => {
+    Linking.openURL("tel:+441316187000");
+  };
+
+  const handleEmailPress = (email) => {
+    Linking.openURL(`mailto:${email}`);
+  };
+
   return (
     <ScrollView
       contentContainerStyle={styles.wrapper}
@@ -9,100 +23,79 @@ export default function Contact() {
       <View className="bg-gray-100 py-12">
         <View className="shadow-md pb-30">
           <Text className="text-3xl font-bold tracking-tight text-gray-900">
-            Get in touch
+            Hai să ne auzim!
           </Text>
           <Text className="my-6 leading-8 text-lg text-gray-600">
-            Quam nunc nunc eu sed. Sed rhoncus quis ultricies ac pellentesque.
+            Dacă ai o întrebare, propunere sau dacă doar vrei să ne comunici
+            ceva, nu ezita să ne trimiți un mesaj prin mail sau telefon.
           </Text>
         </View>
+
         <View className="flex shadow-md justify-center gap-6">
+          {/* Contact Section */}
           <View className="rounded-2xl bg-gray-50 p-10">
             <Text className="text-base font-semibold leading-7 text-gray-900">
-              Collaborate
+              Contact
             </Text>
             <View className="mt-3 space-y-1 text-sm leading-6 text-gray-600">
-              <View>
-                <Text className="sr-only">Email</Text>
-                <Text>
-                  <Text
-                    className="font-semibold text-red-500"
-                    href="mailto:collaborate@example.com"
-                  >
-                    collaborate@example.com
-                  </Text>
+              <TouchableOpacity
+                onPress={() => handleEmailPress("contact@romaniaonline.net")}
+              >
+                <Text className="font-semibold text-red-500">
+                  contact@romaniaonline.net
                 </Text>
-              </View>
-              <View className="mt-1">
-                <Text className="sr-only">Phone number</Text>
-                <Text>+1 (555) 905-2345</Text>
-              </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={handlePhonePress}
+                className="mt-2 bg-gray-200 p-2 rounded-lg"
+              >
+                <Text className="text-black font-semibold">
+                  +44 131 618 7000
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
+
+          {/* Vânzări Section */}
           <View className="rounded-2xl bg-gray-50 p-10">
             <Text className="text-base font-semibold leading-7 text-gray-900">
-              Press
+              Vânzări
             </Text>
-            <Text className="mt-3 space-y-1 text-sm leading-6 text-gray-600">
-              <View>
-                <Text className="sr-only">Email</Text>
-                <Text>
-                  <Text
-                    className="font-semibold text-red-500"
-                    href="mailto:press@example.com"
-                  >
-                    press@example.com
-                  </Text>
-                </Text>
-              </View>
-              <View className="mt-1">
-                <Text className="sr-only">Phone number</Text>
-                <Text>+1 (555) 905-3456</Text>
-              </View>
-            </Text>
+            <TouchableOpacity
+              onPress={() => handleEmailPress("sales@romaniaonline.net")}
+            >
+              <Text className="font-semibold text-red-500 mt-3">
+                sales@romaniaonline.net
+              </Text>
+            </TouchableOpacity>
           </View>
+
+          {/* Emisiuni Section */}
           <View className="rounded-2xl bg-gray-50 p-10">
             <Text className="text-base font-semibold leading-7 text-gray-900">
-              Join our team
+              Emisiuni
             </Text>
-            <Text className="mt-3 space-y-1 text-sm leading-6 text-gray-600">
-              <View>
-                <Text className="sr-only">Email</Text>
-                <Text>
-                  <Text
-                    className="font-semibold text-red-500"
-                    href="mailto:careers@example.com"
-                  >
-                    careers@example.com
-                  </Text>
-                </Text>
-              </View>
-              <View className="mt-1">
-                <Text className="sr-only">Phone number</Text>
-                <Text>+1 (555) 905-4567</Text>
-              </View>
-            </Text>
+            <TouchableOpacity
+              onPress={() => handleEmailPress("emisiuni@romaniaonline.net")}
+            >
+              <Text className="font-semibold text-red-500 mt-3">
+                emisiuni@romaniaonline.net
+              </Text>
+            </TouchableOpacity>
           </View>
+
+          {/* Alatură-te Echipei Section */}
           <View className="rounded-2xl bg-gray-50 p-10">
             <Text className="text-base font-semibold leading-7 text-gray-900">
-              Say hello
+              Alatură-te Echipei
             </Text>
-            <Text className="mt-3 space-y-1 text-sm leading-6 text-gray-600">
-              <View>
-                <Text className="sr-only">Email</Text>
-                <Text>
-                  <Text
-                    className="font-semibold text-red-500"
-                    href="mailto:hello@example.com"
-                  >
-                    hello@example.com
-                  </Text>
-                </Text>
-              </View>
-              <View className="mt-1">
-                <Text className="sr-only">Phone number</Text>
-                <Text>+1 (555) 905-5678</Text>
-              </View>
-            </Text>
+            <TouchableOpacity
+              onPress={() => handleEmailPress("echipa@romaniaonline.net")}
+            >
+              <Text className="font-semibold text-red-500 mt-3">
+                echipa@romaniaonline.net
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
