@@ -83,9 +83,9 @@ const ScheduleWidget = () => {
                   {item.playlist.title}
                 </Text>
 
-                <Text className="text-sm text-right text-gray-500">
+                {/* <Text className="text-sm text-right text-gray-500">
                   {item.playlist.artist}
-                </Text>
+                </Text> */}
               </View>
             </View>
           ))

@@ -45,10 +45,7 @@ export default function Contact() {
                   contact@romaniaonline.net
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={handlePhonePress}
-                className="mt-2 bg-gray-200 p-2 rounded-lg"
-              >
+              <TouchableOpacity onPress={handlePhonePress} className="mt-2 p-4">
                 <Text className="text-black font-semibold">
                   +44 131 618 7000
                 </Text>
