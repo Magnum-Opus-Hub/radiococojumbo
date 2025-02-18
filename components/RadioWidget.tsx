@@ -5,7 +5,6 @@ import {
   ActivityIndicator,
   Image,
   Alert,
-  Button,
   TouchableOpacity,
 } from "react-native";
 import { Audio } from "expo-av";
@@ -150,7 +149,7 @@ export default function RadioWidget() {
         <View className="flex-row items-center">
           <PulsatingDot />
           <Text className="text-md font-bold tracking-tight text-gray-900">
-            Live now:
+            Live now
           </Text>
         </View>
         <View>{renderStatus()}</View>

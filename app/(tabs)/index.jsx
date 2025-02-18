@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { ScrollView, RefreshControl } from "react-native";
 import RadioWidget from "@/components/RadioWidget";
 import ScheduleWidget from "@/components/ScheduleWidget";
+import BannerTop from "../../components/BannerTop"
+import BannerWidget from "../../components/BannerWidget";
 
 export default function TabOneScreen() {
   const [refreshing, setRefreshing] = useState(false);
@@ -22,9 +24,11 @@ export default function TabOneScreen() {
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       } // Adding pull-to-refresh control
     >
+      <BannerTop/>
       <RadioWidget />
       {/* <TestRadio /> */}
       <ScheduleWidget />
+      <BannerWidget/>
     </ScrollView>
   );
 }
